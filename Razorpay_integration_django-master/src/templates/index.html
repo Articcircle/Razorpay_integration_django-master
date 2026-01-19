@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="col-6 mx-auto">
+
+    <div class="text-center mt-5">
+        <img src="https://www.onlygfx.com/wp-content/uploads/2015/12/coffee-cup.png"
+             class="img-fluid" style="height:200px">
+        <h3>Buy Me A Coffee ☕</h3>
+    </div>
+
+    <!-- Step 1: Order Creation Form -->
+    {% if not payment %}
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group mt-4">
+            <label>Enter name</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+
+        <div class="form-group mt-4">
+            <label for="exampleInputEmail" >Enter email</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Enter Amount</label>
+            <input name="amount" type="number" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block mt-3">
+            Create Order
+        </button>
+    </form>
+    {% endif %}
+
+
+    <!-- Step 2: Razorpay Checkout -->
+    {% if payment %}
+    <form action="/success" method="POST">
+        {% csrf_token %}
+
+        <script
+            src="https://checkout.razorpay.com/v1/checkout.js"
+            data-key="rzp_test_S4xNQZHc9hnBbS"
+            data-amount="{{ payment.amount }}"
+            data-currency="INR"
+            data-order_id="{{ payment.id }}"
+            data-buttontext="Pay with Razorpay"
+            data-name="Coffee Corp"
+            data-description="Buy me a coffee"
+            data-image="https://example.com/logo.png"
+            data-theme.color="#F37254"
+        ></script>
+
+        <input type="hidden" name="hidden">
+    </form>
+    {% endif %}
+
+</div>
+
+{% endblock %}
