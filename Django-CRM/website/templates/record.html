@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="card">
+  <div class="card-header">
+    <strong>{{ customer_record.first_name }} {{ customer_record.last_name }}</strong>
+  </div>
+
+  <div class="card-body">
+    <p class="card-text"><strong>Email:</strong> {{ customer_record.email }}</p>
+    <p class="card-text"><strong>Phone:</strong> {{ customer_record.phone }}</p>
+    <p class="card-text"><strong>Address:</strong> {{ customer_record.address }}</p>
+    <p class="card-text"><strong>City:</strong> {{ customer_record.city }}</p>
+    <p class="card-text"><strong>State:</strong> {{ customer_record.state }}</p>
+    <p class="card-text"><strong>Zipcode:</strong> {{ customer_record.zipcode }}</p>
+    <p class="card-text"><strong>Create At:</strong> {{ customer_record.created_at }}</p>
+    <p class="card-text"><strong>ID:</strong> {{ customer_record.id }}</p>
+
+    <hr>
+
+    <!-- 🆕 New Fields Added Below -->
+    {% if customer_record.product_id %}
+    <p class="card-text"><strong>Product ID:</strong> {{ customer_record.product_id }}</p>
+    {% endif %}
+
+    {% if customer_record.order_day %}
+    <p class="card-text"><strong>Order Day:</strong> {{ customer_record.order_day|date:"M d, Y" }}</p>
+    {% endif %}
+
+    {% if customer_record.delivered_date %}
+    <p class="card-text"><strong>Delivered Date:</strong> {{ customer_record.delivered_date|date:"M d, Y" }}</p>
+    {% endif %}
+
+    {% if customer_record.customer_response %}
+    <p class="card-text"><strong>Customer Response:</strong> {{ customer_record.customer_response }}</p>
+    {% endif %}
+
+    <p class="card-text"><strong>Status:</strong> {{ customer_record.status }}</p>
+    <p class="card-text"><strong>Rating:</strong> {{ customer_record.rating }}/5</p>
+  </div>
+</div>
+
+<br><br>
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+<a href="{% url 'delete_record' customer_record.id %}" class="btn btn-danger">Delete</a>
+<a href="{% url 'update_record' customer_record.id %}" class="btn btn-secondary">Update Record</a>
+
+{% endblock %}

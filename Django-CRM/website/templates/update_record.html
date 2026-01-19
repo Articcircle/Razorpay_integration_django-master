@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="col-md-6 offset-md-3">
+  <h1>Update Record</h1>
+  <br/>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div class="mb-3">
+      <label for="rating" class="form-label"><strong>Rating:</strong></label>
+      <div id="star-container" style="font-size: 1.8rem; color: gold; cursor: pointer;">
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+      </div>
+      <!-- hidden numeric input (still part of the Django form) -->
+      <input type="hidden" name="rating" id="id_rating" value="{{ form.instance.rating|default:0 }}">
+    </div>
+
+    <br/>
+    <button type="submit" class="btn btn-secondary">Update Record</button>
+  </form>
+</div>
+
+<script>
+  const stars = document.querySelectorAll('#star-container .star');
+  const ratingInput = document.getElementById('id_rating');
+  let currentRating = parseInt(ratingInput.value) || 0;
+
+  function updateStars(rating) {
+    stars.forEach((star, index) => {
+      star.style.opacity = index < rating ? '1' : '0.3';
+    });
+  }
+
+  updateStars(currentRating);
+
+  stars.forEach((star, index) => {
+    star.addEventListener('click', () => {
+      const selectedRating = index + 1;
+      ratingInput.value = selectedRating;
+      updateStars(selectedRating);
+    });
+  });
+</script>
+
+{% endblock %}
